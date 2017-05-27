@@ -1,8 +1,6 @@
 package ch.hearc.tp3.client;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 import ch.hearc.tp3.client.views_controllers.ClientViewController;
 import javafx.application.Application;
@@ -60,4 +58,11 @@ public class Client extends Application
             e.printStackTrace();
         } 
     }
+
+    public Stage getPrimaryStage()
+    {
+        return primaryStage;
+    }
+    
+    
 }

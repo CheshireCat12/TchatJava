@@ -1,88 +1,70 @@
 package ch.hearc.tp3.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class ClientHandler implements Runnable
 {
-    private String clientName;
+
     private Socket socket;
-    private PrintWriter output;
-    private BufferedReader input;
-    private ArrayList<Socket> clientList;
+
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
     private ArrayList<ClientHandler> clientHandlers;
 
-    public ClientHandler(Socket socket, String clientName, ArrayList<Socket> clientList, ArrayList<ClientHandler> clientHandlers)
+    public ClientHandler(Socket socket, 
+            ArrayList<ClientHandler> clientHandlers)
     {
-        this.clientName = clientName;
+ 
         this.socket = socket;
-        this.clientList = clientList;
-        
+
         this.clientHandlers = clientHandlers;
-        
+
         try
         {
-            this.output = new PrintWriter(socket.getOutputStream(), true);
-            this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
 
     @Override
     public void run()
     {
-        /*BufferedOutputStream outputStream = null;
-        PrintWriter out = null;
-        BufferedReader in = null;*/
         try
         {
-            System.out.println("I'm " + this.clientName);
-            
-            
-            //StringBuffer messa = new StringBuffer();
-            //String messages = new String();
+            System.out.println("New connection Opened");
 
-            output.println("From server : Connexion réussi");
-            //output.flush();
-            //out.close();
+            outputStream.writeObject("From server : Connexion réussi");
+            outputStream.flush();
 
-            while(socket.getInputStream().read() != -1)
+            Object newObj;
+
+            while (true)
             {
-                if(input.ready()) { 
-                    //messa.append(input.readLine());
-                    String messages = input.readLine();
-
-                    sendToAll(messages);
-                }    
-                try
-                {
-                    Thread.sleep(200);
-                } catch (InterruptedException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                newObj = inputStream.readObject();
+                sendToAll(newObj);
             }
-        } catch (IOException e)
+
+        } catch (IOException | ClassNotFoundException e)
         {
             e.printStackTrace();
         } finally
         {
             try
             {
-                System.out.println("close");
-                clientList.remove(socket);
-                input.close();
-                output.close();
+                clientHandlers.remove(socket);
+                outputStream.close();
+                inputStream.close();
                 socket.close();
+                System.out.println("Socket closed" );
             } catch (IOException e)
             {
                 // TODO Auto-generated catch block
@@ -90,16 +72,19 @@ public class ClientHandler implements Runnable
             }
         }
     }
-    
-    public void sendToAll(String messages)
+
+    public void sendToAll(Object data)
     {
-        
-        for(ClientHandler client : clientHandlers)
+        for (ClientHandler client : clientHandlers)
         {
-            System.out.println(messages);
-            
-            client.output.println(messages);
-            //client.output.flush();
+            try
+            {
+                client.outputStream.writeObject(data);
+            } catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
     }

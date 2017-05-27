@@ -17,8 +17,6 @@ public class Server extends Application
 {
     private Stage primaryStage;
     private ServerViewController controller;
-    private static int clientNumber;
-    private static ArrayList<Socket> clientListSocket;
     private static ArrayList<ClientHandler> clientHandlers;
     
     public final static String serverViewController = "views_controllers/ServerView.fxml";
@@ -26,7 +24,6 @@ public class Server extends Application
     public static void main(String[] args)
     {
         //launch(args);
-        clientListSocket = new ArrayList<>();
         clientHandlers = new ArrayList<>();
         try(ServerSocket serverSocket = new ServerSocket(50885))
         {
@@ -36,16 +33,13 @@ public class Server extends Application
             {
                 //The socket is closed in the handler
                 Socket socket = serverSocket.accept();
-                clientListSocket.add(socket);
-                ClientHandler newClient = new ClientHandler(socket, "toto", clientListSocket, clientHandlers);
+                ClientHandler newClient = new ClientHandler(socket, clientHandlers);
                 
                 clientHandlers.add(newClient);
                 
                 Thread thread = new Thread(newClient);
-                //Thread thread = new Thread(new ClientHandler(socket, clientName + clientNumber));
                 thread.start();
-                
-                clientNumber++;
+
             }
         } catch (IOException e)
         {
