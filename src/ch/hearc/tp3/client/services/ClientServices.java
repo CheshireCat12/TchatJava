@@ -2,16 +2,12 @@ package ch.hearc.tp3.client.services;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLNonTransientConnectionException;
-
-import org.omg.CORBA.SystemException;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Service;
@@ -57,7 +53,7 @@ public class ClientServices extends Service<String>
                     } else if (dataReceived instanceof byte[])
                     {
                         String filename = reverseByteName((byte[]) dataReceived);
-                        str_message.append("Fichier " + filename + " reçu.");
+                        str_message.append("Fichier " + filename + " reçu.\n");
                         message.setValue(str_message.toString());
                     }
 
@@ -201,7 +197,7 @@ public class ClientServices extends Service<String>
 
         }
         /*
-         * Add the file name in the byte array
+         * Add the filename at the beginning of the byte array
          */
         byte[] destination = new byte[1 + (int) file.getName().getBytes().length
                 + bytesArray.length];
@@ -224,9 +220,7 @@ public class ClientServices extends Service<String>
             try
             {
                 inputStream.close();
-                System.out.println("in");
                 outputStream.close();
-                System.out.println("out");
                 socket.close();
                 System.out.println("close socket");
             } catch (IOException e)

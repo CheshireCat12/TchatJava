@@ -62,11 +62,15 @@ public class ClientViewController
         if (clientServices.connection())
         {
             btn_send.setDisable(false);
+            btn_connection.setDisable(true);
             tf_message.setDisable(false);
             ta_message.setDisable(false);
+            tf_pseudo.setDisable(true);
+            
+            tf_message.requestFocus();
 
             menuSendFile.setDisable(false);
-
+            
             clientServices.start();
         } else
         {
@@ -78,7 +82,6 @@ public class ClientViewController
 
             alert.showAndWait();
         }
-
     }
 
     @FXML
@@ -113,6 +116,7 @@ public class ClientViewController
     private void handlerBtnSend(ActionEvent event)
     {
         clientServices.sendMessage(tf_pseudo.getText(), tf_message.getText());
+        tf_message.setText("");
     }
 
     @FXML
@@ -127,6 +131,17 @@ public class ClientViewController
         Optional<String> result = dialog.showAndWait();
         // The Java 8 way to get the response value (with lambda expression).
         result.ifPresent(name -> clientServices.setPathFile(name));
+    }
+    
+    @FXML
+    private void handlerAbout(ActionEvent event)
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("A propos");
+        alert.setHeaderText("Information sur les développeur du projet");
+        alert.setContentText("Bento Da Silva Axel \n&\n Gillioz Anthony (dit le radieux)");
+
+        alert.showAndWait();
     }
 
     @FXML
@@ -159,11 +174,10 @@ public class ClientViewController
 
         dialog.getDialogPane().setContent(gridPane);
 
-        // Request focus on the username field by default.
+        //Put the focus on the IP Address by default
         Platform.runLater(() -> IpAddress.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button
-        // is clicked.
+        // Convert the result to a ipAddress-PortAdress pair when the button is clicked
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == btn_changeOption)
             {
@@ -174,10 +188,6 @@ public class ClientViewController
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        if (result.isPresent()){
-            //clientServices.setPortAddress(result.get);
-            //System.out.println("Your name: " + Pair.getKey());
-        }
         result.ifPresent(pair -> {
             clientServices.setPortAddress(pair.getValue());
             clientServices.setServeurAdress(pair.getKey());

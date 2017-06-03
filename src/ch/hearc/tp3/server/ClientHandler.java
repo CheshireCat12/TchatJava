@@ -55,7 +55,7 @@ public class ClientHandler implements Runnable
 
         } catch (IOException | ClassNotFoundException e)
         {
-            e.printStackTrace();
+            System.out.println("Fermeture du socket avec de la VIOLENCE!!! ^^");
         } finally
         {
             try
@@ -67,8 +67,7 @@ public class ClientHandler implements Runnable
                 System.out.println("Socket closed" );
             } catch (IOException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("Erreur lors de la fermeture des sockets.");
             }
         }
     }
@@ -82,8 +81,7 @@ public class ClientHandler implements Runnable
                 client.outputStream.writeObject(data);
             } catch (IOException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("Erreur lors du renvoie des objects.");
             }
         }
 
