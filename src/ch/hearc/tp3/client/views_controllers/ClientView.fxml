@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hearc.tp3.client.views_controllers.ClientViewController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hearc.tp3.client.views_controllers.ClientViewController">
    <children>
       <VBox>
          <children>
@@ -41,9 +41,18 @@
                <bottom>
                   <HBox prefHeight="41.0" prefWidth="693.0" BorderPane.alignment="CENTER">
                      <children>
-                        <TextField fx:id="tf_message" disable="true" prefHeight="31.0" prefWidth="548.0" />
-                        <Button fx:id="btn_send" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handlerBtnSend" prefHeight="31.0" prefWidth="87.0" text="Envoyer" />
+                        <TextField fx:id="tf_message" disable="true" prefHeight="31.0" prefWidth="500.0">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></TextField>
+                        <Button fx:id="btn_send" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handlerBtnSend" prefHeight="31.0" prefWidth="87.0" text="Envoyer">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin></Button>
                      </children>
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
                   </HBox>
                </bottom>
                <padding>
@@ -55,8 +64,14 @@
                         <HBox prefHeight="34.0" prefWidth="614.0">
                            <children>
                               <Label text="Etat de la connexion :" />
-                              <Label fx:id="lbl_isConnected" text="Déconnecter" />
+                              <Label fx:id="lbl_isConnected" text="Déconnecter">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin></Label>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
                         </HBox>
                         <TextArea fx:id="ta_message" disable="true" editable="false" prefHeight="267.0" prefWidth="381.0" />
                      </children>
@@ -65,8 +80,14 @@
                <top>
                   <HBox prefHeight="39.0" prefWidth="693.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label fx:id="lbl_server" text="Pseudo :" />
-                        <TextField fx:id="tf_pseudo" prefHeight="31.0" prefWidth="164.0" text="toto" />
+                        <Label fx:id="lbl_server" text="Pseudo :">
+                           <HBox.margin>
+                              <Insets right="10.0" top="5.0" />
+                           </HBox.margin></Label>
+                        <TextField fx:id="tf_pseudo" prefHeight="31.0" prefWidth="164.0" text="toto">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></TextField>
                         <Button fx:id="btn_connection" mnemonicParsing="false" onAction="#handlerBtnConnection" text="Connexion">
                            <HBox.margin>
                               <Insets />
