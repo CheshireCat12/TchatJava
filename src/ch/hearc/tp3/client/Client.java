@@ -44,6 +44,7 @@ public class Client extends Application
             controller.setMainClient(this);
 
             primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
             primaryStage.show();
             
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
